@@ -17,6 +17,7 @@ War class
 *  +checkForWinner(void) : int    *
 *  +getCardSpread(void) : int[]   *
 *  +getRoundCount(void) : int     *
+*  +toString(void) : String       *
 ***********************************
 
 */
@@ -48,47 +49,70 @@ public class War
    */
    public void round()
    {
-      ArrayList<Card> playerCard, computerCard;
-      playerCard = new ArrayList<Card>();
-      computerCard = new ArrayList<Card>();
-      boolean isWar = true;
-      while (isWar)
+      if (checkForWinner() == 0)
       {
-         playerCard.add(0, player.dealCard());
-         computerCard.add(0, computer.dealCard());
-         System.out.println(playerCard.get(0).toString() + " versus " + computerCard.get(0).toString());
-         if (playerCard.get(0).compareTo(computerCard.get(0)) > 0)
+         ArrayList<Card> playerCard, computerCard;
+         playerCard = new ArrayList<Card>();
+         computerCard = new ArrayList<Card>();
+         boolean isWar = true;
+         while (isWar)
          {
-            // Player wins round
-            player.addCard(computerCard);
-            player.addCard(playerCard);
-            isWar = false;
-            System.out.println("Player wins");
-         }
-         else if (playerCard.get(0).compareTo(computerCard.get(0)) < 0)
-         {
-            // Player loses round
-            computer.addCard(playerCard);
-            computer.addCard(computerCard);
-            isWar = false;
-            System.out.println("Computer wins");
-         }
-         else
-         {
-            // Tie, therefore there is a war
-            System.out.println("War!");
-            if (player.cardsRemaining() < 2 || computer.cardsRemaining() < 2)
+            playerCard.add(0, player.dealCard());
+            computerCard.add(0, computer.dealCard());
+            //System.out.println(playerCard.get(0).toString() + " versus " + computerCard.get(0).toString());
+            if (playerCard.get(0).compareTo(computerCard.get(0)) > 0)
             {
+               // Player wins round
+               player.addCard(computerCard);
+               player.addCard(playerCard);
                isWar = false;
+               //System.out.println("Player wins");
+            }
+            else if (playerCard.get(0).compareTo(computerCard.get(0)) < 0)
+            {
+               // Player loses round
+               computer.addCard(playerCard);
+               computer.addCard(computerCard);
+               isWar = false;
+               //System.out.println("Computer wins");
             }
             else
             {
-               playerCard.add(0, player.dealCard());
-               computerCard.add(0, computer.dealCard());
+               // Tie, therefore there is a war
+               // System.out.println("War!");
+               if (player.cardsRemaining() < 2)
+               {
+                  // Player can not complete war, computer wins
+                  if (!player.isEmpty())
+                  {
+                     playerCard.add(0, player.dealCard());
+                     computerCard.add(0, computer.dealCard());
+                  }
+                  computer.addCard(playerCard);
+                  computer.addCard(computerCard);
+                  isWar = false;
+               }
+               else if (computer.cardsRemaining() < 2)
+               {
+                  // Computer can not complete war, player wins
+                  if (!computer.isEmpty())
+                  {
+                     playerCard.add(0, player.dealCard());
+                     computerCard.add(0, computer.dealCard());
+                  }
+                  player.addCard(computerCard);
+                  player.addCard(playerCard);
+                  isWar = false;
+               }
+               else
+               {
+                  playerCard.add(0, player.dealCard());
+                  computerCard.add(0, computer.dealCard());
+               }
             }
          }
+         roundCount++;
       }
-      roundCount++;
    }
    
    /**
@@ -133,6 +157,15 @@ public class War
       return roundCount;
    }
    
+   /**
+   
+   */
+   public String toString()
+   {
+      return "Player: " + getCardSpread()[0] + " Computer: " + getCardSpread()[1] +
+         "\nRounds played: " + getRoundCount() + "\n";
+   }
+   
    // Demo code
    public static void main(String [] args)
    {
@@ -140,8 +173,7 @@ public class War
       while (game.checkForWinner() == 0)
       {
          game.round();
-         System.out.println("Player: " + game.getCardSpread()[0] + " Computer: " + game.getCardSpread()[1]);
-         System.out.println("Rounds played: " + game.getRoundCount() + "\n");
+         System.out.println(game.toString());
       }
       if (game.checkForWinner() > 0)
       {

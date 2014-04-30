@@ -13,7 +13,7 @@ War class
 *  -roundCount : int              *
 ***********************************
 *  +War(void)                     *
-*  +round(void)                   *
+*  +round(void) : Card[]          *
 *  +checkForWinner(void) : int    *
 *  +getCardSpread(void) : int[]   *
 *  +getRoundCount(void) : int     *
@@ -46,9 +46,11 @@ public class War
    
    /**
       The round() method simulates a round of war.
+      @return An array of cards played during the round, where the first half orignated from the player
    */
-   public void round()
+   public Card[] round()
    {
+      Card[] out;
       if (checkForWinner() == 0)
       {
          ArrayList<Card> playerCard, computerCard;
@@ -112,6 +114,20 @@ public class War
             }
          }
          roundCount++;
+         out = new Card[playerCard.size() + computerCard.size()];
+         int j = 0;
+         for (int i = out.length/2-1; i >= 0; i--)
+         {
+            out[i*2] = playerCard.get(j);
+            out[i*2+1] = computerCard.get(j);
+            j++;
+         }
+         return out;
+      }
+      else
+      {
+         out = new Card[0];
+         return out;
       }
    }
    
@@ -158,7 +174,9 @@ public class War
    }
    
    /**
-   
+      The toString() method returns a formatted string showing the card spread and the number
+      of rounds played.
+      @return A formatted string showing the card spread and number of rounds played
    */
    public String toString()
    {
@@ -170,9 +188,14 @@ public class War
    public static void main(String [] args)
    {
       War game = new War();
+      Card[] cards;
       while (game.checkForWinner() == 0)
       {
-         game.round();
+         cards = game.round();
+         for (Card c : cards)
+         {
+            System.out.println(c.toString());
+         }
          System.out.println(game.toString());
       }
       if (game.checkForWinner() > 0)

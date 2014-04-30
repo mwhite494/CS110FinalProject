@@ -31,13 +31,14 @@ Card class
 
 /**
    Represents a single playing card with a rank and suit.
+   An ace in this class is treated as a higher rank than a king.
 */
 
 public class Card
 {
    // Fields
    public final static int SPADES = 1, CLUBS = 2, HEARTS = 3, DIAMONDS = 4;
-   public final static int ACE = 1, JACK = 11, QUEEN = 12, KING = 13;
+   public final static int ACE = 14, JACK = 11, QUEEN = 12, KING = 13;
    private int rank, suit;
    
    /**
@@ -55,9 +56,9 @@ public class Card
       {
          this.suit = suit;
       }
-      if (rank < 1 || rank > 13)
+      if (rank < 2 || rank > 14)
       {
-         this.rank = 1;
+         this.rank = 2;
       }
       else
       {
@@ -107,8 +108,8 @@ public class Card
       out += "\tRank: ";
       switch (rank)
       {
-         case 1:
-            out += "1";
+         case ACE:
+            out += "Ace";
             break;
          case 2:
             out += "2";

@@ -53,7 +53,7 @@ public class Deck
    public void freshDeck()
    {
       deck = new ArrayList<Card>(CARDS_IN_DECK);
-      for (int r = Card.ACE; r <= Card.KING; r++)
+      for (int r = 2; r <= Card.ACE; r++)
       {
          for (int s = Card.SPADES; s <= Card.DIAMONDS; s++)
          {
@@ -149,7 +149,9 @@ public class Deck
    }
    
    /**
-   
+      The toString() method returns a formatted string showing all of the
+      cards within the deck.
+      @return A formatted string showing all of the cards within the deck
    */
    public String toString()
    {

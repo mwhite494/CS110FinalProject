@@ -14,6 +14,7 @@ CS110 Final Project
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public class WarGUI extends JFrame implements ActionListener
 {
@@ -21,6 +22,7 @@ public class WarGUI extends JFrame implements ActionListener
    private JPanel headerPanel, buttonPanel, gamePanel;
    private JLabel title, status, player, computer, gameInfo;
    private JButton newGame, playRound, playAll, exitGame;
+   private JSlider playAllSpeed;
    private Timer warTimer, playAllTimer;
    private int timerCount, warCount;
    private Card[] cards; // Temporarily holds cards to be displayed in gui
@@ -39,7 +41,7 @@ public class WarGUI extends JFrame implements ActionListener
       warTimer = new Timer(500, this);
       warTimer.setRepeats(true);
       // Configure timer for playAll button
-      playAllTimer = new Timer(1, this);
+      playAllTimer = new Timer(100, this);
       playAllTimer.setRepeats(true);
       // Configure the header panel
       headerPanel = new JPanel(new BorderLayout());
@@ -60,7 +62,7 @@ public class WarGUI extends JFrame implements ActionListener
       gamePanel.add(computer);
       add(gamePanel, BorderLayout.CENTER);
       // Configure the button panel
-      buttonPanel = new JPanel(new GridLayout(5,1));
+      buttonPanel = new JPanel(new GridLayout(7,1));
       buttonPanel.setBackground(Color.GREEN);
       gameInfo = new JLabel("", SwingConstants.CENTER);
       updateGameInfo();
@@ -76,6 +78,18 @@ public class WarGUI extends JFrame implements ActionListener
       playAll = new JButton("Play All Rounds");
       playAll.addActionListener(this);
       buttonPanel.add(playAll);
+      playAllSpeed = new JSlider(1, 199);
+      playAllSpeed.addChangeListener(
+         new ChangeListener()
+         {
+            @Override
+            public void stateChanged(ChangeEvent e)
+            {
+               playAllTimer.setDelay(playAllSpeed.getValue());
+            }
+         });
+      buttonPanel.add(playAllSpeed);
+      buttonPanel.add(new JLabel("Play All Rounds Speed", SwingConstants.CENTER));
       exitGame = new JButton("Exit Game");
       exitGame.addActionListener(this);
       buttonPanel.add(exitGame);

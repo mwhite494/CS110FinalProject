@@ -209,8 +209,10 @@ public class WarGUI extends JFrame implements ActionListener
          if (game.checkForWinner() == 0)
          {
             cards = game.round();
+            // Display cards
             player.setIcon(new ImageIcon(getImagePath(cards[0])));
             computer.setIcon(new ImageIcon(getImagePath(cards[1])));
+            // Normal round
             if (cards.length == 2)
             {
                if (cards[0].compareTo(cards[1]) > 0)
@@ -228,8 +230,10 @@ public class WarGUI extends JFrame implements ActionListener
                }
                checkForWinner();
             }
+            // A war has occured
             else
             {
+               // Determine how many wars occured
                warCount = (cards.length-2)/4;
                timerCount = 0;
                status.setText("War!");
@@ -254,6 +258,7 @@ public class WarGUI extends JFrame implements ActionListener
       else if (e.getSource() == warTimer)
       {
          timerCount++;
+         // On even iterations, place a card face up
          if (timerCount % 2 == 0)
          {
             player.setIcon(new ImageIcon(getImagePath(cards[timerCount*2])));
@@ -263,11 +268,25 @@ public class WarGUI extends JFrame implements ActionListener
                warTimer.stop();
                if (cards[timerCount*2].compareTo(cards[timerCount*2+1]) > 0)
                {
-                  status.setText("Player won " + warCount + " wars, gains " + (cards.length/2) + " cards");
+                  if (warCount == 1)
+                  {
+                     status.setText("Player won " + warCount + " war, gains " + (cards.length/2) + " cards");
+                  }
+                  else
+                  {
+                     status.setText("Player won " + warCount + " wars, gains " + (cards.length/2) + " cards");
+                  }
                }
                else
                {
-                  status.setText("Computer won " + warCount + " wars, gains " + (cards.length/2) + " cards");
+                  if (warCount == 1)
+                  {
+                     status.setText("Computer won " + warCount + " war, gains " + (cards.length/2) + " cards");
+                  }
+                  else
+                  {
+                     status.setText("Computer won " + warCount + " wars, gains " + (cards.length/2) + " cards");
+                  }
                }
                updateGameInfo();
                newGame.setEnabled(true);
@@ -276,6 +295,7 @@ public class WarGUI extends JFrame implements ActionListener
                checkForWinner();
             }
          }
+         // On odd iteraionts, place a card face down
          else
          {
             player.setIcon(new ImageIcon("cardPics/back.jpg"));
